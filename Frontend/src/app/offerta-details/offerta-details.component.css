@@ -1,0 +1,12 @@
+.card-libera{
+    align-items:center;
+    justify-content: flex-end;
+}
+.card-occupata{
+    background-color: #F8D7DA;
+}
+
+tr > * {
+    vertical-align : middle;
+}
+

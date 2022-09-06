@@ -1,0 +1,21 @@
+
+  mat-card {
+    max-width: 98%;
+    margin: 2em auto;
+  }
+  .example-full-width2{
+    max-width: 50%;
+  }
+  mat-form-field {
+    display: block;
+  }
+  .your-class input{
+    float:left;
+  }
+  .container {
+    display: block;
+    text-align: center;
+  }
+  .example-full{
+    display: flex;
+  }

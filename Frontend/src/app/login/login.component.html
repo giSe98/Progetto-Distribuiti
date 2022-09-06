@@ -1,0 +1,37 @@
+
+
+  <mat-card>
+    <mat-card-content>
+      <form #loginForm="ngForm" >
+        <h2>Log In</h2>
+        <mat-error *ngIf="invalidLogin">
+          Username e password non riconosciute
+        </mat-error>
+        <mat-form-field>
+          <input matInput placeholder="Email" [(ngModel)]="username" name="username" required>
+          <mat-error>
+            Please provide a valid email address
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+          <mat-error>
+            Please provide a valid password
+          </mat-error>
+        </mat-form-field>
+        <table width="100%">
+          <tr>
+            <td>
+              <button (click)="handleLogin()" mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Login</button>
+          
+            </td>
+            <td>
+                <button (click)="router.navigate(['/signup']);" mat-raised-button color="primary" >Register</button>     
+            </td>
+          </tr>
+        </table>
+      </form>
+     
+      
+    </mat-card-content>
+  </mat-card>

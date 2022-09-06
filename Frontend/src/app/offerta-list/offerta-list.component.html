@@ -1,0 +1,92 @@
+<div *ngIf="isLoggedIn" class="alert alert-success" role="alert">
+    Accesso eseguito correttamente. Bentornato {{getLoggedIn()}}
+</div>
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<mat-card class="example-full-width">
+    <mat-card-title>Effettua una ricerca</mat-card-title>
+<form [formGroup]="ricerca" >
+    <mat-form-field appearance="fill">
+        <mat-label>Regione</mat-label>
+        <input type="text"
+           placeholder="Seleziona una regione"
+           aria-label="Number"
+           matInput
+           formControlName="regione"
+           [matAutocomplete]="auto"
+           >
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option (onSelectionChange)="selectOption($event)" *ngFor="let regione of filteredOptions| async"  [value]="regione.nome" >
+                {{regione.nome}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="fill" >
+        <mat-label>Provincia</mat-label>
+        <input type="text"
+           placeholder="Seleziona una provincia"
+           aria-label="Number"
+           matInput
+           formControlName="citta"
+           [matAutocomplete]="auto2"
+           >
+        <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
+            <mat-option (onSelectionChange)="selectOptionP($event)" *ngFor="let citta of filteredOptionsP | async"  [value]="citta.nome">
+                {{citta.nome}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="fill" >
+        <mat-label>Comune</mat-label>
+        <input type="text"
+           placeholder="Seleziona un comune"
+           aria-label="Number"
+           matInput
+           formControlName="comune"
+           [matAutocomplete]="auto3"
+           >
+        <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete">
+            <mat-option (onSelectionChange)="selectOptionC($event)" *ngFor="let comune of filteredOptionsC | async"  [value]="comune.nome">
+                {{comune.nome}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <div>
+        <mat-divider></mat-divider>
+    </div>
+    
+    <mat-form-field appearance="fill">
+            <input matInput placeholder="Posti Letto" formControlName="postiLetto">
+    </mat-form-field >
+    <table>
+        <tr>
+            <td>
+                <button (click)="performSearch()" mat-raised-button color="primary" [disabled]="!ricerca.valid">Ricerca</button>
+            </td>
+            <td>
+                <button (click)="getResource()" mat-raised-button color="primary" >Reset</button>
+            </td>
+        </tr>
+    </table>
+    
+    
+</form>
+
+</mat-card>
+</div>
+
+<div *ngFor="let offerta of offerte" style = "width:1400px ; margin-left: auto;
+margin-right: auto;">
+    <mat-divider></mat-divider>
+    <app-offerta-details [offerta]='offerta'></app-offerta-details>
+</div>
+
+<mat-divider></mat-divider>
+
+<mat-paginator #paginator
+              [length]="length"
+              [pageSize]="pageSize"
+              [pageIndex]="pageIndex"
+              [pageSizeOptions]="[5, 10, 25]"
+              (page) = "reloadData($event)"
+              >
+</mat-paginator>

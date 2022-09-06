@@ -1,0 +1,24 @@
+.navbar-light .navbar-nav .nav-link
+{
+    color: white;
+    font-size: larger;
+}
+.navbar-light .navbar-nav .nav-link.active-link
+{
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+.color
+{
+    background-color: black;
+}
+.background
+{
+    background-image: url('../../../assets/img/up.jpg');
+    background-position: center top;
+    background-size: cover;
+}
+b
+{
+    color: white;
+}

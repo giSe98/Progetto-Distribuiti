@@ -1,0 +1,59 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+  
+    <mat-card class="box">
+      <div *ngIf="profugo || offerente" class="alert alert-success " role="alert">
+        Registrazione avvenuta con successo. Esegui il <a href="/login" class="alert-link">login</a>
+      </div>
+      <div *ngIf="errore" class="alert alert-danger " role="alert">
+        Registrazione non effettuata. Utente già esistente!
+      </div>
+      <mat-card-header>
+        <mat-card-title>Registrazione</mat-card-title>
+      </mat-card-header>
+      <form class="example-form" [formGroup]="signin" (ngSubmit)="performRegistration()">
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nome" formControlName="nome">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Cognome" formControlName="cognome">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput [matDatepicker]="picker" placeholder="Data di nascita" formControlName="data">
+            <mat-datepicker-toggle matSuffix  [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Numero di telefono (+xxxxxx)" formControlName="telefono">
+            <mat-hint></mat-hint>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Conferma Password" [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword" required>
+            <mat-error *ngIf="signin.hasError('notSame')"></mat-error>
+            <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Seleziona un ruolo...</mat-label>
+            <mat-select [(value)]="selected" formControlName="ruolo" required>
+              <mat-option value="profugo">Profugo</mat-option>
+              <mat-option value="offerente">Offerente</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" *ngIf="selected == 'profugo'">
+            <input matInput placeholder="Codice Consolato" formControlName="consolato">
+          </mat-form-field>
+          <mat-form-field class="example-full-width" *ngIf="selected == 'offerente'">
+            <input matInput placeholder="Codice Fiscale" formControlName="codiceF">
+          </mat-form-field>
+        </mat-card-content>
+        <button mat-raised-button color="primary" [disabled]="!signin.valid">Registrati</button>
+      </form>
+    </mat-card>
+  </div>

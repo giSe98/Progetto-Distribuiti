@@ -1,0 +1,258 @@
+
+<div *ngIf="ruolo">
+    <div *ngIf="ruolo.authority=='Offerente'" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="isLoggedIn" class="alert alert-success" role="alert">
+            Accesso eseguito correttamente. Bentornato {{getLoggedIn()}}
+        </div>
+        <mat-card class="example-full-width2">
+            <div *ngIf="creata" class="alert alert-success" role="alert">
+                Offerta creata correttamente
+            </div>
+            <div *ngIf="error" class="alert alert-danger" role="alert">
+                Offerta non caricata. Riprova.
+            </div>
+            <mat-card-title>Inserisci una nuova offerta</mat-card-title>
+            <form class="example-form" [formGroup]="offertaForm" >
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Posti Letto" formControlName="postiLetto">
+                </mat-form-field>
+                <table cellpadding="140px" style="width:100%;">
+                    <tr>
+                    <td>
+                    <mat-form-field >
+                        <mat-label>Regione</mat-label>
+                        <input type="text"
+                           placeholder="Seleziona una regione"
+                           aria-label="Number"
+                           matInput
+                           formControlName="regione"
+                           [matAutocomplete]="auto"
+                           >
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option (onSelectionChange)="selectOption($event)" *ngFor="let regione of filteredOptions| async"  [value]="regione.nome" >
+                                {{regione.nome}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;
+                </td>
+                <td>
+                    <mat-form-field >
+                        <mat-label>Provincia</mat-label>
+                        <input type="text"
+                           placeholder="Seleziona una provincia"
+                           aria-label="Number"
+                           matInput
+                           formControlName="provincia"
+                           [matAutocomplete]="auto2"
+                           >
+                        <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete">
+                            <mat-option (onSelectionChange)="selectOptionP($event)" *ngFor="let citta of filteredOptionsP | async"  [value]="citta.nome">
+                                {{citta.nome}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;
+                </td>
+                <td>
+                    <mat-form-field >
+                        <mat-label>Comune</mat-label>
+                        <input type="text"
+                           placeholder="Seleziona un comune"
+                           aria-label="Number"
+                           matInput
+                           formControlName="comune"
+                           [matAutocomplete]="auto3"
+                           >
+                        <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete">
+                            <mat-option (onSelectionChange)="selectOptionC($event)" *ngFor="let comune of filteredOptionsC | async"  [value]="comune.nome">
+                                {{comune.nome}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </td>
+                </tr>
+                </table>
+                <table cellpadding="140px" style="width:100%;">
+                    <tr>
+                        <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Via" formControlName="via">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Numero civico" formControlName="numeroCivico">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+                <mat-form-field>
+                    <mat-label>Descrizione</mat-label>
+                    <textarea matInput
+                              cdkTextareaAutosize
+                              formControlName="descrizione"
+                              #autosize="cdkTextareaAutosize"
+                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMaxRows="5"></textarea>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Carica una foto</mat-label>
+                    <button mat-icon-button matPrefix (click)="f_input.click()">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                    <input type="text" readonly matInput formControlName="display" />
+                    <input  
+                        type="file"
+                        hidden
+                        #f_input
+                        (change)="onImageUpload($event)" 
+                        formControlName="image"
+                        accept="image/*"
+                    >
+                  </mat-form-field>
+                <div class="container">
+                    <button (click)="performCreate()" mat-raised-button color="primary" [disabled]="!offertaForm.valid">Crea offerta</button>
+                </div>
+                
+            </form>
+        </mat-card>
+        <mat-card class="example-full-width">
+            <mat-card-title>Le tue offerte sul portale</mat-card-title>
+            <mat-tab-group>
+                <mat-tab label="Libere">
+                    <div *ngIf="this.message!=''" class="alert alert-success" role="alert">
+                        {{this.message}}
+                    </div>
+                    <div *ngFor="let offerta of offerte">
+                        <div *ngIf="!offerta.occupata">
+                            
+                            <div> &nbsp;</div>
+                        <b>Appartamento numero {{offerta.idCasa}}</b>
+                        <div>
+                            <label><b>Posti letto: </b>{{offerta.postiLetto}}</label>
+                        </div>
+                        <div>
+                            <b>Situata in: </b> {{offerta.via}} n° {{offerta.numeroCivico}}
+                        </div>
+                        <div>
+                            
+                            <b>Regione: </b> {{offerta.regione}}
+                            <b>Provincia: </b> {{offerta.provincia}}
+                            <b>Comune: </b> {{offerta.comune}}
+                        </div>
+                                    <mat-card-actions>
+                                        &nbsp; &nbsp;<button (click)="cancellaOfferta(offerta)" mat-raised-button color="primary">Cancella</button>
+                                    </mat-card-actions>
+                        <mat-divider></mat-divider>
+                        </div>
+                        
+                        
+                    </div>
+                </mat-tab>
+                <mat-tab label="Occupate">
+                    <div *ngFor="let offerta of offerte">
+                        <div *ngIf="offerta.occupata">
+                            <div> &nbsp;</div>
+                        <b>Appartamento numero {{offerta.idCasa}}</b>
+                        <div>
+                            <label><b>Posti letto: </b>{{offerta.postiLetto}}</label>
+                        </div>
+                        <div>
+                            <b>Situata in: </b> {{offerta.via}} n° {{offerta.numeroCivico}}
+                        </div>
+                        <div>
+                            
+                            <b>Regione: </b> {{offerta.regione}}
+                            <b>Provincia: </b> {{offerta.provincia}}
+                            <b>Comune: </b> {{offerta.comune}}
+                        </div>
+                        <div> &nbsp;</div>
+
+                        <mat-divider></mat-divider>
+                        </div>
+                        
+                        
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            
+        </mat-card>
+
+        
+    </div>
+
+    <div *ngIf="ruolo.authority=='Profugo'" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="isLoggedIn" class="alert alert-success" role="alert">
+            Accesso eseguito correttamente. Bentornato {{getLoggedIn()}}
+        </div>
+        <mat-card class="example-full-width">
+            <div *ngIf="this.message!=''" class="alert alert-success" role="alert">
+                {{this.message}}
+            </div>
+            <mat-card-title>Le tue giacenze</mat-card-title>
+            <div *ngFor="let giacenza of giacenze">
+                <div> &nbsp;</div>
+                <b>Giacenza numero {{giacenza.id}}</b>
+                <div>
+                    <label><b>Data di inizio: </b>{{giacenza.inizio}}</label>
+                </div>
+                <label><b>Data di fine:  </b>{{giacenza.fine}}</label>
+                <div> &nbsp;</div>
+                <b>Dettagli casa</b>
+                <table style="width:100%">
+                    <tr>
+                    <td>
+                    <label><b>Posti letto: </b>{{giacenza.offerta.postiLetto}}</label>
+                    
+                    <div>
+                      <b>Situata in: </b> {{giacenza.offerta.via}} n° {{giacenza.offerta.numeroCivico}}
+                    </div>
+                    <div>
+                      <b>Citta: </b> {{giacenza.offerta.provincia}}
+                      <b>Regione: </b> {{giacenza.offerta.regione}}
+                    </div>
+                    <div><b>Offerente:</b>
+                    {{giacenza.offerta.offerente.nome}}</div>
+                  </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <mat-card-actions *ngIf="!terminato(giacenza.fine)">
+                            &nbsp; <button (click)="modificaGiacenza(giacenza)" mat-raised-button color="primary">Modifica</button>
+                        </mat-card-actions>
+                      
+                    </td>
+                    <td>
+                        <mat-card-actions *ngIf="valido(giacenza.inizio)">
+                            &nbsp;  &nbsp; &nbsp; &nbsp;<button (click)="handleClick(giacenza)" mat-raised-button color="primary">Cancella</button>
+                        </mat-card-actions>
+                    </td>
+                    <td>
+                        <mat-card-actions *ngIf="!valido(giacenza.inizio) && !terminato(giacenza.fine)">
+                            &nbsp;  &nbsp; &nbsp; &nbsp;<button (click)="terminaGiacenza(giacenza)" mat-raised-button color="primary">Termina</button>
+                        </mat-card-actions>
+                    </td>
+                </tr>
+            </table>
+               
+                      
+
+                <mat-divider></mat-divider>
+                
+            </div>
+        </mat-card>
+    </div>
+
+
+</div>

@@ -1,0 +1,97 @@
+<mat-card *ngIf="!offerta.occupata" class="card-libera" fxLayoutAlign="start center" >
+  <div *ngIf="this.error!=''" class="alert alert-danger" role="alert">
+    {{this.error}}. Provvedi ad eliminarla dalla <a href="/dashboard">Dashboard</a>.
+</div>
+<div *ngIf="this.message!=''" class="alert alert-success" role="alert">
+  Giacenza registrata correttamente. Puoi visualizzarla nella tua <a href="/dashboard">Dashboard</a>.
+</div>
+  <table>
+  <tr>
+    <td>
+      <div *ngIf="dbImage">
+        <img [src]="dbImage" height="200">
+      </div>
+    </td>
+    <td>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+    </td>
+  <td><mat-card-title>Appartamento numero {{offerta.idCasa}}</mat-card-title>
+  <label>{{offerta.descrizione}}</label>
+  <div>
+
+  </div>
+  <label><b>Posti letto: </b>{{offerta.postiLetto}}</label>
+  
+  <div>
+    <b>Situata in: </b> {{offerta.via}} n° {{offerta.numeroCivico}}
+  </div>
+  <div>
+    <b>Citta: </b> {{offerta.provincia}}
+    <b>Regione: </b> {{offerta.regione}}
+  </div>
+  <div><b>Offerente:</b>
+  {{offerta.offerente.nome}}</div>
+  <div *ngIf="ruolo">
+    <mat-card-actions *ngIf="isLoggedIn && ruolo.authority=='Profugo'">
+      &nbsp;&nbsp;<button mat-raised-button (click)="handleClick()" mat-button>Prenota</button>
+    </mat-card-actions>
+  </div>
+</td>
+
+<td>
+  
+  
+</td>
+</tr>
+<tr>
+
+  <td>
+    <button (click)="openMap()" mat-raised-button >Apri mappa</button>
+  </td>
+  <td>
+    
+  </td>
+</tr>
+</table>
+<div *ngIf="giacenza">
+  <mat-divider></mat-divider>
+  <div>
+    <div> &nbsp;</div>
+    <mat-card-title>Registra la tua giacenza</mat-card-title>
+    <div> &nbsp;</div>
+    <form class="example-form" [formGroup]="giacenzaForm" (ngSubmit)="performRegistration()">
+      <table>
+        <tr>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Data di inizio</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="inizio">
+              <mat-datepicker-toggle matSuffix  [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+            &nbsp;&nbsp;
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Data di fine</mat-label>
+              <input matInput [matDatepicker]="picker1" formControlName="fine">
+              <mat-datepicker-toggle matSuffix  [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </td>
+          <td>
+            &nbsp;&nbsp;
+          </td>
+          <td>
+            <button mat-raised-button color="primary" [disabled]="!giacenzaForm.valid">Invia</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  
+</div>
+</mat-card>
+

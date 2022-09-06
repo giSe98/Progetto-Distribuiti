@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-light background">
+  <div class="container-fluid">
+    <img width="30" alt="Slava Ukraini" src="../../../assets/img/download.png"/>  
+    <b class="navbar-brand">
+        <b>&nbsp;Slava Ukraïni !</b>
+    </b>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink=""  routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}" >Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="offers" routerLinkActive="active-link">Offers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="about" routerLinkActive="active-link">About us</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="!isLoggedIn" class="nav-link" routerLink="login" routerLinkActive="active-link">Login</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="!isLoggedIn" class="nav-link" routerLink="signup" routerLinkActive="active-link">Sign up</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="isLoggedIn" class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="isLoggedIn" class="nav-link" href="/logout" (click)=handleLogout()>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
